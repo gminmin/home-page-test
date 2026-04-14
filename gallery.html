@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>갤러리 – 진부중학교 3D 동아리</title>
+  <meta name="description" content="진부중학교 3D 동아리 활동 사진과 영상 갤러리입니다." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .tab-bar {
+      display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2.5rem;
+    }
+    .tab-btn {
+      padding: 0.6rem 1.5rem;
+      border-radius: 30px; font-size: 0.9rem; font-weight: 600;
+      border: 1.5px solid rgba(4,173,192,0.25); background: transparent;
+      color: var(--c-text-sub); cursor: pointer; transition: var(--transition);
+    }
+    .tab-btn:hover, .tab-btn.active {
+      background: var(--grad-main); color: #fff; border-color: transparent;
+    }
+
+    /* 사진 그리드 */
+    .photo-grid { columns: 3 260px; column-gap: 1rem; }
+    .photo-item {
+      break-inside: avoid; margin-bottom: 1rem;
+      border-radius: var(--radius-md); overflow: hidden;
+      position: relative; cursor: pointer;
+      border: 1px solid rgba(4,173,192,0.12);
+    }
+    .photo-item:hover .photo-overlay { opacity: 1; }
+    .photo-thumb {
+      width: 100%; display: flex; align-items: center; justify-content: center;
+    }
+    .photo-thumb-label {
+      font-family: var(--f-accent);
+      font-size: 1rem; color: rgba(255,255,255,0.8);
+      letter-spacing: 0.05em;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.2);
+    }
+    .photo-thumb.h-sm { height: 150px; }
+    .photo-thumb.h-md { height: 210px; }
+    .photo-thumb.h-lg { height: 270px; }
+
+    .photo-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(12,13,13,0.75), transparent);
+      opacity: 0; transition: opacity var(--transition);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1rem;
+    }
+    .photo-overlay-title { color: #fff; font-size: 0.9rem; font-weight: 700; }
+    .photo-overlay-date { color: rgba(255,255,255,0.7); font-size: 0.75rem; }
+
+    /* 영상 그리드 */
+    .video-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+    }
+    @media (max-width: 660px) { .video-grid { grid-template-columns: 1fr; } }
+
+    .video-card {
+      background: var(--c-card);
+      border: 1px solid rgba(4,173,192,0.12);
+      border-radius: var(--radius-md);
+      overflow: hidden; box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .video-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+    .video-thumb {
+      width: 100%; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; cursor: pointer;
+    }
+    .video-play-btn {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+      border: 2px solid rgba(255,255,255,0.4);
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    /* CSS 삼각형 재생 버튼 */
+    .play-triangle {
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 10px 0 10px 18px;
+      border-color: transparent transparent transparent rgba(255,255,255,0.9);
+      margin-left: 4px;
+    }
+    .video-thumb:hover .video-play-btn {
+      transform: scale(1.1); background: rgba(255,255,255,0.3);
+    }
+    .video-body { padding: 1.25rem; }
+    .video-body h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .video-body p  { font-size: 0.82rem; color: var(--c-text-sub); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="Color_Logo.png" alt="진부중 3D 동아리 로고" onerror="this.style.display='none'" />
+    <span class="nav-logo-text">진부중학교 3D 동아리</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">홈</a>
+    <a href="about.html">동아리 소개</a>
+    <a href="activity.html">활동 내용</a>
+    <a href="works.html">작품</a>
+    <a href="gallery.html">갤러리</a>
+    <a href="notice.html">공지사항</a>
+    <a href="contact.html">문의</a>
+  </div>
+  <button class="nav-toggle" aria-label="메뉴 열기"><span></span><span></span><span></span></button>
+</nav>
+<nav class="nav-mobile">
+  <a href="index.html">홈</a>
+  <a href="about.html">동아리 소개</a>
+  <a href="activity.html">활동 내용</a>
+  <a href="works.html">작품</a>
+  <a href="gallery.html">갤러리</a>
+  <a href="notice.html">공지사항</a>
+  <a href="contact.html">문의</a>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="section-label" style="color:rgba(255,255,255,0.8); background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25);">GALLERY</span>
+    <h1 style="margin-top:0.75rem;">갤러리</h1>
+    <p>동아리 활동 사진과 영상 기록을 만나보세요.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="tab-bar reveal">
+      <button class="tab-btn active" data-tab="photo">사진</button>
+      <button class="tab-btn" data-tab="video">영상</button>
+    </div>
+
+    <!-- 사진 탭 -->
+    <div class="tab-content active" id="tab-photo">
+      <div class="photo-grid">
+        <div class="photo-item reveal">
+          <div class="photo-thumb h-md" style="background:linear-gradient(135deg,#04ADC0,#5D68A6);">
+            <span class="photo-thumb-label">모델링 수업</span>
+          </div>
+          <div class="photo-overlay">
+            <div class="photo-overlay-title">모델링 수업 현장</div>
+            <div class="photo-overlay-date">2025.09.15</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <div class="photo-thumb h-lg" style="background:linear-gradient(135deg,#9C7BA6,#03D9D9);">
+            <span class="photo-thumb-label">전시회</span>
+          </div>
+          <div class="photo-overlay">
+            <div class="photo-overlay-title">2025 작품 전시회</div>
+            <div class="photo-overlay-date">2025.12.10</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <div class="photo-thumb h-sm" style="background:linear-gradient(135deg,#56BF7C,#04ADC0);">
+            <span class="photo-thumb-label">전체 회의</span>
+          </div>
+          <div class="photo-overlay">
+            <div class="photo-overlay-title">전체 동아리 회의</div>
+            <div class="photo-overlay-date">2025.10.05</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <div class="photo-thumb h-sm" style="background:linear-gradient(135deg,#5D68A6,#9C7BA6);">
+            <span class="photo-thumb-label">텍스처링</span>
+          </div>
+          <div class="photo-overlay">
+            <div class="photo-overlay-title">텍스처링 실습</div>
+            <div class="photo-overlay-date">2025.11.20</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <div class="photo-thumb h-md" style="background:linear-gradient(135deg,#03D9D9,#56BF7C);">
+            <span class="photo-thumb-label">렌더링 감상</span>
+          </div>
+          <div class="photo-overlay">
+            <div class="photo-overlay-title">렌더링 결과물 감상</div>
+            <div class="photo-overlay-date">2025.11.30</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <div class="photo-thumb h-lg" style="background:linear-gradient(135deg,#04ADC0,#56BF7C);">
+            <span class="photo-thumb-label">스컬팅</span>
+          </div>
+          <div class="photo-overlay">
+            <div class="photo-overlay-title">스컬팅 워크숍</div>
+            <div class="photo-overlay-date">2026.03.22</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <div class="photo-thumb h-md" style="background:linear-gradient(135deg,#9C7BA6,#5D68A6);">
+            <span class="photo-thumb-label">애니메이션</span>
+          </div>
+          <div class="photo-overlay">
+            <div class="photo-overlay-title">애니메이션 발표</div>
+            <div class="photo-overlay-date">2026.02.28</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <div class="photo-thumb h-sm" style="background:linear-gradient(135deg,#03D9D9,#04ADC0);">
+            <span class="photo-thumb-label">건축 모델링</span>
+          </div>
+          <div class="photo-overlay">
+            <div class="photo-overlay-title">건축 모델링 수업</div>
+            <div class="photo-overlay-date">2026.04.01</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 영상 탭 -->
+    <div class="tab-content" id="tab-video">
+      <div class="video-grid">
+        <div class="video-card reveal">
+          <div class="video-thumb" style="background:linear-gradient(135deg,#04ADC0,#5D68A6);">
+            <div class="video-play-btn"><div class="play-triangle"></div></div>
+          </div>
+          <div class="video-body">
+            <h3>2025 연말 발표회 하이라이트</h3>
+            <p>2025.12.15 · 동아리원 전체 발표 영상</p>
+          </div>
+        </div>
+        <div class="video-card reveal reveal-delay-1">
+          <div class="video-thumb" style="background:linear-gradient(135deg,#9C7BA6,#03D9D9);">
+            <div class="video-play-btn"><div class="play-triangle"></div></div>
+          </div>
+          <div class="video-body">
+            <h3>로봇 캐릭터 애니메이션</h3>
+            <p>2025.11.10 · 리깅 &amp; 키프레임 애니메이션</p>
+          </div>
+        </div>
+        <div class="video-card reveal">
+          <div class="video-thumb" style="background:linear-gradient(135deg,#56BF7C,#04ADC0);">
+            <div class="video-play-btn"><div class="play-triangle"></div></div>
+          </div>
+          <div class="video-body">
+            <h3>도시 재생 프로젝트 티저</h3>
+            <p>2025.07.05 · 1학기 팀 프로젝트 영상</p>
+          </div>
+        </div>
+        <div class="video-card reveal reveal-delay-1">
+          <div class="video-thumb" style="background:linear-gradient(135deg,#5D68A6,#56BF7C);">
+            <div class="video-play-btn"><div class="play-triangle"></div></div>
+          </div>
+          <div class="video-body">
+            <h3>VFX 파티클 실습</h3>
+            <p>2026.03.30 · 블렌더 파티클 시뮬레이션</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="text-align:center; margin-top:3rem; padding:2rem; background:rgba(4,173,192,0.04); border:1px dashed rgba(4,173,192,0.25); border-radius:var(--radius-md);">
+      <p style="color:var(--c-text-sub); font-size:0.9rem; margin-bottom:1rem;">
+        갤러리에 더 많은 사진과 영상이 추가될 예정입니다.
+      </p>
+      <a href="contact.html" class="btn btn-outline">사진 제보 문의</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">진부중 3D 동아리</div>
+      <p>진부중학교 3D 동아리<br />3D 모델링 · 렌더링 · 애니메이션</p>
+    </div>
+    <div class="footer-col">
+      <h4>메뉴</h4>
+      <ul>
+        <li><a href="about.html">동아리 소개</a></li>
+        <li><a href="activity.html">활동 내용</a></li>
+        <li><a href="works.html">작품</a></li>
+        <li><a href="gallery.html">갤러리</a></li>
+        <li><a href="notice.html">공지사항</a></li>
+        <li><a href="contact.html">문의</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>연락처</h4>
+      <ul>
+        <li><a href="mailto:contact@jb3d.xyz">contact@jb3d.xyz</a></li>
+        <li><a href="contact.html">오는 길</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 진부중학교 3D 동아리. All rights reserved.</div>
+</footer>
+
+<script type="module" src="dataService.js"></script>
+<script src="main.js"></script>
+<script type="module">
+  async function renderGallery() {
+    const checkDS = setInterval(async () => {
+      if (window.dataService) {
+        clearInterval(checkDS);
+        const ds = window.dataService;
+        const photoGrid = document.querySelector('.photo-grid');
+        const videoGrid = document.querySelector('.video-grid');
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        photoGrid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding: 3rem; width: 100%;">사진을 불러오는 중...</p>';
+        videoGrid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding: 3rem; width: 100%;">영상을 불러오는 중...</p>';
+
+        const galleryItems = await ds.getGallery();
+        photoGrid.innerHTML = '';
+        videoGrid.innerHTML = '';
+
+        const photos = galleryItems.filter(i => i.type === 'photo');
+        const videos = galleryItems.filter(i => i.type === 'video');
+
+        if (photos.length === 0) {
+          photoGrid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding: 3rem; width: 100%;">등록된 사진이 없습니다.</p>';
+        } else {
+          photos.forEach((p, index) => {
+            const item = document.createElement('div');
+            item.className = 'photo-item reveal';
+            const heights = ['h-sm', 'h-md', 'h-lg'];
+            const randomHeight = heights[index % heights.length];
+            
+            item.innerHTML = `
+              <div class="photo-thumb ${randomHeight}" style="background: url('${p.fileUrl}') center/cover no-repeat; background-color: #04ADC0;">
+                <span class="photo-thumb-label" style="display:${p.fileUrl ? 'none' : 'block'}">JB3D</span>
+              </div>
+              <div class="photo-overlay">
+                <div class="photo-overlay-title">${p.title}</div>
+                <div class="photo-overlay-date">${p.date}</div>
+              </div>
+            `;
+            photoGrid.appendChild(item);
+          });
+        }
+
+        if (videos.length === 0) {
+          videoGrid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding: 3rem; width: 100%;">등록된 영상이 없습니다.</p>';
+        } else {
+          videos.forEach((v, index) => {
+            const item = document.createElement('div');
+            item.className = 'video-card reveal';
+            if (index > 0) item.classList.add(`reveal-delay-${Math.min(index, 3)}`);
+
+            item.innerHTML = `
+              <div class="video-thumb" style="background: url('${v.fileUrl}') center/cover no-repeat; background-color: #5D68A6;">
+                <div class="video-play-btn"><div class="play-triangle"></div></div>
+              </div>
+              <div class="video-body">
+                <h3>${v.title}</h3>
+                <p>${v.date} · 3D 동아리 활동 영상</p>
+              </div>
+            `;
+            // 영상 재생 로직 (필요시 추가)
+            photoGrid.appendChild(item);
+          });
+        }
+
+        tabBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+            if (window.initScrollReveal) window.initScrollReveal();
+          });
+        });
+
+        if (window.initScrollReveal) window.initScrollReveal();
+      }
+    }, 50);
+  }
+
+  document.addEventListener('DOMContentLoaded', renderGallery);
+</script>
+</body>
+</html>

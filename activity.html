@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>활동 내용 – 진부중학교 3D 동아리</title>
+  <meta name="description" content="진부중학교 3D 동아리의 3D 모델링, 렌더링, 애니메이션 활동 내용을 소개합니다." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .activity-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    @media (max-width: 860px) { .activity-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 540px) { .activity-grid { grid-template-columns: 1fr; } }
+
+    .activity-card {
+      background: var(--c-card);
+      border: 1px solid rgba(4,173,192,0.12);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .activity-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+
+    .activity-thumb {
+      height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .activity-thumb-label {
+      font-family: var(--f-accent);
+      font-size: 1.4rem;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.05em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      position: relative; z-index: 1;
+    }
+
+    .activity-body { padding: 1.5rem; }
+    .activity-body h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+    .activity-body p { font-size: 0.88rem; color: var(--c-text-sub); line-height: 1.8; }
+    .activity-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.85rem; }
+
+    /* 스케줄 테이블 */
+    .schedule-table {
+      width: 100%; border-collapse: collapse; font-size: 0.9rem;
+    }
+    .schedule-table th {
+      background: var(--grad-main); color: #fff;
+      padding: 0.75rem 1rem; text-align: left;
+      font-weight: 600; font-size: 0.85rem;
+    }
+    .schedule-table th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+    .schedule-table th:last-child  { border-radius: 0 var(--radius-sm) 0 0; }
+    .schedule-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(4,173,192,0.08);
+      color: var(--c-text-sub);
+    }
+    .schedule-table tr:nth-child(even) td { background: rgba(4,173,192,0.03); }
+    .schedule-table tr:last-child td { border-bottom: none; }
+    .schedule-table td:first-child { color: var(--c-teal); font-weight: 600; }
+
+    /* 툴 카드 */
+    .tool-icon {
+      width: 48px; height: 48px;
+      border-radius: var(--radius-sm);
+      background: var(--grad-main);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--f-accent);
+      font-size: 0.7rem; font-weight: 700;
+      color: #fff;
+      margin: 0 auto 0.75rem;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="Color_Logo.png" alt="진부중 3D 동아리 로고" onerror="this.style.display='none'" />
+    <span class="nav-logo-text">진부중학교 3D 동아리</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">홈</a>
+    <a href="about.html">동아리 소개</a>
+    <a href="activity.html">활동 내용</a>
+    <a href="works.html">작품</a>
+    <a href="gallery.html">갤러리</a>
+    <a href="notice.html">공지사항</a>
+    <a href="contact.html">문의</a>
+  </div>
+  <button class="nav-toggle" aria-label="메뉴 열기"><span></span><span></span><span></span></button>
+</nav>
+<nav class="nav-mobile">
+  <a href="index.html">홈</a>
+  <a href="about.html">동아리 소개</a>
+  <a href="activity.html">활동 내용</a>
+  <a href="works.html">작품</a>
+  <a href="gallery.html">갤러리</a>
+  <a href="notice.html">공지사항</a>
+  <a href="contact.html">문의</a>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="section-label" style="color:rgba(255,255,255,0.8); background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25);">ACTIVITY</span>
+    <h1 style="margin-top:0.75rem;">활동 내용</h1>
+    <p>진부중학교 3D 동아리에서 어떤 것들을 배우고 만드는지 알아보세요.</p>
+  </div>
+</section>
+
+<!-- 활동 카드 -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">WHAT WE DO</span>
+      <h2 class="section-title">주요 <span>활동 분야</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="activity-grid">
+      <div class="activity-card reveal">
+        <div class="activity-thumb" style="background:linear-gradient(135deg,#04ADC0,#03D9D9);">
+          <span class="activity-thumb-label">모델링</span>
+        </div>
+        <div class="activity-body">
+          <h3>3D 모델링</h3>
+          <p>블렌더(Blender)를 이용해 오브젝트, 캐릭터, 건물 등을 모델링합니다. 기초 메시 편집부터 서브서피스 모델링까지 단계별로 학습합니다.</p>
+          <div class="activity-tags">
+            <span class="badge">Blender</span>
+            <span class="badge">메시 편집</span>
+            <span class="badge">스컬팅</span>
+          </div>
+        </div>
+      </div>
+      <div class="activity-card reveal reveal-delay-1">
+        <div class="activity-thumb" style="background:linear-gradient(135deg,#5D68A6,#9C7BA6);">
+          <span class="activity-thumb-label">재질</span>
+        </div>
+        <div class="activity-body">
+          <h3>재질 &amp; 텍스처링</h3>
+          <p>UV 언래핑, 쉐이더 노드를 활용해 사실적인 재질을 제작합니다. PBR 워크플로우를 기반으로 퀄리티 높은 텍스처를 만듭니다.</p>
+          <div class="activity-tags">
+            <span class="badge">UV 언래핑</span>
+            <span class="badge">PBR</span>
+            <span class="badge">쉐이더</span>
+          </div>
+        </div>
+      </div>
+      <div class="activity-card reveal reveal-delay-2">
+        <div class="activity-thumb" style="background:linear-gradient(135deg,#56BF7C,#04ADC0);">
+          <span class="activity-thumb-label">렌더링</span>
+        </div>
+        <div class="activity-body">
+          <h3>렌더링</h3>
+          <p>EEVEE, Cycles 렌더러를 활용해 사실적이고 아름다운 이미지를 출력합니다. 라이팅과 카메라 설정을 통해 분위기를 표현합니다.</p>
+          <div class="activity-tags">
+            <span class="badge">EEVEE</span>
+            <span class="badge">Cycles</span>
+            <span class="badge">라이팅</span>
+          </div>
+        </div>
+      </div>
+      <div class="activity-card reveal">
+        <div class="activity-thumb" style="background:linear-gradient(135deg,#03D9D9,#56BF7C);">
+          <span class="activity-thumb-label">애니메이션</span>
+        </div>
+        <div class="activity-body">
+          <h3>애니메이션</h3>
+          <p>키프레임 애니메이션, 리깅을 통해 모델에 생명을 불어넣습니다. 간단한 물체 애니메이션부터 캐릭터 워킹 사이클까지 도전합니다.</p>
+          <div class="activity-tags">
+            <span class="badge">키프레임</span>
+            <span class="badge">리깅</span>
+            <span class="badge">NLA 에디터</span>
+          </div>
+        </div>
+      </div>
+      <div class="activity-card reveal reveal-delay-1">
+        <div class="activity-thumb" style="background:linear-gradient(135deg,#9C7BA6,#5D68A6);">
+          <span class="activity-thumb-label">VFX</span>
+        </div>
+        <div class="activity-body">
+          <h3>VFX &amp; 합성</h3>
+          <p>3D 요소를 실사 영상에 합성하거나 파티클, 시뮬레이션 등 VFX 효과를 제작합니다. 블렌더 컴포지터를 활용합니다.</p>
+          <div class="activity-tags">
+            <span class="badge">파티클</span>
+            <span class="badge">시뮬레이션</span>
+            <span class="badge">컴포지팅</span>
+          </div>
+        </div>
+      </div>
+      <div class="activity-card reveal reveal-delay-2">
+        <div class="activity-thumb" style="background:linear-gradient(135deg,#04ADC0,#9C7BA6);">
+          <span class="activity-thumb-label">전시</span>
+        </div>
+        <div class="activity-body">
+          <h3>프로젝트 &amp; 전시</h3>
+          <p>학기마다 팀 프로젝트를 진행하고 결과물을 교내외에 전시합니다. 기획부터 발표까지 전 과정을 경험합니다.</p>
+          <div class="activity-tags">
+            <span class="badge">팀 프로젝트</span>
+            <span class="badge">발표</span>
+            <span class="badge">전시</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 활동 스케줄 -->
+<section class="section" style="background:linear-gradient(135deg,rgba(4,173,192,0.04),rgba(93,104,166,0.04));">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">SCHEDULE</span>
+      <h2 class="section-title">활동 일정</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>월</th>
+            <th>주요 활동</th>
+            <th>목표</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>3월</td><td>OT · 블렌더 기초 설치 및 인터페이스 학습</td><td>환경 세팅 완료</td></tr>
+          <tr><td>4월</td><td>기초 모델링 – 도형 편집, 메시 모델링</td><td>첫 번째 오브젝트 완성</td></tr>
+          <tr><td>5월</td><td>재질 &amp; 텍스처링, 라이팅 기초</td><td>렌더링 이미지 출력</td></tr>
+          <tr><td>6월</td><td>1학기 팀 프로젝트 기획 &amp; 제작</td><td>중간 점검 발표</td></tr>
+          <tr><td>7월</td><td>1학기 작품 발표 &amp; 교내 전시</td><td>전시 참여</td></tr>
+          <tr><td>9월</td><td>애니메이션 기초 – 키프레임, 리깅</td><td>단편 애니메이션 제작</td></tr>
+          <tr><td>10월</td><td>VFX · 합성 실습</td><td>VFX 영상 1편 완성</td></tr>
+          <tr><td>11월</td><td>2학기 팀 프로젝트 집중 제작</td><td>최종 작품 완성</td></tr>
+          <tr><td>12월</td><td>연말 발표회 &amp; 작품 전시</td><td>공개 전시</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 사용 툴 -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">TOOLS</span>
+      <h2 class="section-title">사용 <span>소프트웨어</span></h2>
+    </div>
+    <div class="gap-grid grid-4 reveal">
+      <div class="card" style="padding:1.5rem; text-align:center;">
+        <div class="tool-icon">BLD</div>
+        <div style="font-weight:700; margin-bottom:0.3rem;">Blender</div>
+        <div style="font-size:0.8rem; color:var(--c-text-sub);">메인 3D 소프트웨어</div>
+      </div>
+      <div class="card" style="padding:1.5rem; text-align:center;">
+        <div class="tool-icon">PS</div>
+        <div style="font-weight:700; margin-bottom:0.3rem;">Photoshop</div>
+        <div style="font-size:0.8rem; color:var(--c-text-sub);">이미지 편집 &amp; 텍스처</div>
+      </div>
+      <div class="card" style="padding:1.5rem; text-align:center;">
+        <div class="tool-icon">DVR</div>
+        <div style="font-weight:700; margin-bottom:0.3rem;">DaVinci Resolve</div>
+        <div style="font-size:0.8rem; color:var(--c-text-sub);">영상 편집 &amp; 합성</div>
+      </div>
+      <div class="card" style="padding:1.5rem; text-align:center;">
+        <div class="tool-icon">SKP</div>
+        <div style="font-weight:700; margin-bottom:0.3rem;">SketchUp</div>
+        <div style="font-size:0.8rem; color:var(--c-text-sub);">건축 · 공간 모델링</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">진부중 3D 동아리</div>
+      <p>진부중학교 3D 동아리<br />3D 모델링 · 렌더링 · 애니메이션</p>
+    </div>
+    <div class="footer-col">
+      <h4>메뉴</h4>
+      <ul>
+        <li><a href="about.html">동아리 소개</a></li>
+        <li><a href="activity.html">활동 내용</a></li>
+        <li><a href="works.html">작품</a></li>
+        <li><a href="gallery.html">갤러리</a></li>
+        <li><a href="notice.html">공지사항</a></li>
+        <li><a href="contact.html">문의</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>연락처</h4>
+      <ul>
+        <li><a href="mailto:contact@jb3d.xyz">contact@jb3d.xyz</a></li>
+        <li><a href="contact.html">오는 길</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 진부중학교 3D 동아리. All rights reserved.</div>
+</footer>
+<script src="main.js"></script>
+</body>
+</html>
