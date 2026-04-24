@@ -15,7 +15,7 @@
 
     .activity-card {
       background: var(--c-card);
-      border: 1px solid rgba(4,173,192,0.12);
+      border: 2px solid rgba(4,173,192,0.25);
       border-radius: var(--radius-md);
       overflow: hidden;
       box-shadow: var(--shadow-sm);
@@ -33,7 +33,6 @@
       font-size: 1.4rem;
       color: rgba(255,255,255,0.9);
       letter-spacing: 0.05em;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.15);
       position: relative; z-index: 1;
     }
 
@@ -55,7 +54,7 @@
     .schedule-table th:last-child  { border-radius: 0 var(--radius-sm) 0 0; }
     .schedule-table td {
       padding: 0.75rem 1rem;
-      border-bottom: 1px solid rgba(4,173,192,0.08);
+      border-bottom: 2px solid rgba(4,173,192,0.2);
       color: var(--c-text-sub);
     }
     .schedule-table tr:nth-child(even) td { background: rgba(4,173,192,0.03); }
@@ -218,7 +217,7 @@
       <div class="divider"></div>
     </div>
     <div class="reveal" style="overflow-x:auto;">
-      <table class="schedule-table">
+      <table class="schedule-table" id="scheduleTable">
         <thead>
           <tr>
             <th>월</th>
@@ -226,16 +225,8 @@
             <th>목표</th>
           </tr>
         </thead>
-        <tbody>
-          <tr><td>3월</td><td>OT · 블렌더 기초 설치 및 인터페이스 학습</td><td>환경 세팅 완료</td></tr>
-          <tr><td>4월</td><td>기초 모델링 – 도형 편집, 메시 모델링</td><td>첫 번째 오브젝트 완성</td></tr>
-          <tr><td>5월</td><td>재질 &amp; 텍스처링, 라이팅 기초</td><td>렌더링 이미지 출력</td></tr>
-          <tr><td>6월</td><td>1학기 팀 프로젝트 기획 &amp; 제작</td><td>중간 점검 발표</td></tr>
-          <tr><td>7월</td><td>1학기 작품 발표 &amp; 교내 전시</td><td>전시 참여</td></tr>
-          <tr><td>9월</td><td>애니메이션 기초 – 키프레임, 리깅</td><td>단편 애니메이션 제작</td></tr>
-          <tr><td>10월</td><td>VFX · 합성 실습</td><td>VFX 영상 1편 완성</td></tr>
-          <tr><td>11월</td><td>2학기 팀 프로젝트 집중 제작</td><td>최종 작품 완성</td></tr>
-          <tr><td>12월</td><td>연말 발표회 &amp; 작품 전시</td><td>공개 전시</td></tr>
+        <tbody id="scheduleBody">
+          <tr><td colspan="3" style="text-align:center; padding:2rem;">로딩 중...</td></tr>
         </tbody>
       </table>
     </div>
@@ -251,24 +242,24 @@
     </div>
     <div class="gap-grid grid-4 reveal">
       <div class="card" style="padding:1.5rem; text-align:center;">
-        <div class="tool-icon">BLD</div>
+        <div class="tool-icon">BLDND</div>
         <div style="font-weight:700; margin-bottom:0.3rem;">Blender</div>
         <div style="font-size:0.8rem; color:var(--c-text-sub);">메인 3D 소프트웨어</div>
       </div>
       <div class="card" style="padding:1.5rem; text-align:center;">
-        <div class="tool-icon">PS</div>
+        <div class="tool-icon">Ps</div>
         <div style="font-weight:700; margin-bottom:0.3rem;">Photoshop</div>
         <div style="font-size:0.8rem; color:var(--c-text-sub);">이미지 편집 &amp; 텍스처</div>
       </div>
       <div class="card" style="padding:1.5rem; text-align:center;">
-        <div class="tool-icon">DVR</div>
-        <div style="font-weight:700; margin-bottom:0.3rem;">DaVinci Resolve</div>
+        <div class="tool-icon">Pr</div>
+        <div style="font-weight:700; margin-bottom:0.3rem;">Premiere Pro</div>
         <div style="font-size:0.8rem; color:var(--c-text-sub);">영상 편집 &amp; 합성</div>
       </div>
       <div class="card" style="padding:1.5rem; text-align:center;">
-        <div class="tool-icon">SKP</div>
-        <div style="font-weight:700; margin-bottom:0.3rem;">SketchUp</div>
-        <div style="font-size:0.8rem; color:var(--c-text-sub);">건축 · 공간 모델링</div>
+        <div class="tool-icon">UNITY</div>
+        <div style="font-weight:700; margin-bottom:0.3rem;">Unity</div>
+        <div style="font-size:0.8rem; color:var(--c-text-sub);">모션 캡쳐 &amp; 실시간 렌더링</div>
       </div>
     </div>
   </div>
@@ -301,6 +292,41 @@
   </div>
   <div class="footer-bottom">&copy; 2026 진부중학교 3D 동아리. All rights reserved.</div>
 </footer>
+<script type="module" src="dataService.js"></script>
 <script src="main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      // dataService 로드 대기
+      let retries = 0;
+      while (!window.dataService && retries < 50) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        retries++;
+      }
+
+      if (!window.dataService) {
+        throw new Error('dataService를 불러올 수 없습니다.');
+      }
+
+      const scheduleBody = document.getElementById('scheduleBody');
+      const schedule = await window.dataService.getSchedule();
+
+      if (schedule.length === 0) {
+        scheduleBody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:2rem; color:#94a3b8;">활동 일정 정보가 없습니다.</td></tr>';
+      } else {
+        scheduleBody.innerHTML = schedule.map(item => `
+          <tr>
+            <td>${item.month}</td>
+            <td>${item.activity}</td>
+            <td>${item.goal}</td>
+          </tr>
+        `).join('');
+      }
+    } catch (error) {
+      console.error('활동 일정 로드 실패:', error);
+      document.getElementById('scheduleBody').innerHTML = '<tr><td colspan="3" style="text-align:center; padding:2rem; color:#ef4444;">활동 일정을 불러올 수 없습니다.</td></tr>';
+    }
+  });
+</script>
 </body>
 </html>

@@ -14,7 +14,7 @@
 
     .form-card {
       background: var(--c-card);
-      border: 1px solid rgba(4,173,192,0.14);
+      border: 2px solid rgba(4,173,192,0.25);
       border-radius: var(--radius-lg);
       padding: 2.25rem 2rem;
       box-shadow: var(--shadow-sm);
@@ -40,7 +40,7 @@
 
     .info-card {
       background: var(--c-card);
-      border: 1px solid rgba(4,173,192,0.12);
+      border: 2px solid rgba(4,173,192,0.25);
       border-radius: var(--radius-md);
       padding: 1.4rem 1.5rem;
       display: flex; gap: 1rem; align-items: flex-start;
@@ -80,7 +80,7 @@
 
     .map-wrap {
       border-radius: var(--radius-md); overflow: hidden;
-      border: 1px solid rgba(4,173,192,0.14);
+      border: 2px solid rgba(4,173,192,0.25);
       box-shadow: var(--shadow-sm);
       background: linear-gradient(135deg, rgba(4,173,192,0.07), rgba(93,104,166,0.07));
       min-height: 220px;
@@ -102,10 +102,15 @@
     /* FAQ */
     .faq-item {
       background: var(--c-card);
-      border: 1px solid rgba(4,173,192,0.12);
+      border: 2px solid rgba(4,173,192,0.25);
       border-radius: var(--radius-md);
       margin-bottom: 0.75rem;
       overflow: hidden; box-shadow: var(--shadow-sm);
+      transition: border-color 0.5s ease, transform 1s ease;
+    }
+    .faq-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--c-teal);
     }
     .faq-q {
       width: 100%; padding: 1.1rem 1.25rem;
@@ -184,8 +189,8 @@
               <input type="text" id="name" name="name" placeholder="홍길동" required />
             </div>
             <div class="form-group">
-              <label for="grade">학년/반/번호</label>
-              <input type="text" id="grade" name="grade" placeholder="예) 2학년 3반 15번" />
+              <label for="grade">학번</label>
+              <input type="text" id="grade" name="grade" placeholder="예) 3201" />
             </div>
             <div class="form-group">
               <label for="email">이메일 <span style="color:var(--c-teal)">*</span></label>
@@ -251,9 +256,8 @@
             <div>
               <div class="info-label">SNS &amp; 링크</div>
               <div class="sns-row">
-                <a href="#" class="sns-btn">Instagram</a>
-                <a href="#" class="sns-btn">YouTube</a>
-                <a href="#" class="sns-btn">카카오</a>
+                <a href="https://www.instagram.com/jinbu_3d/" class="sns-btn" target="_blank" rel="noopener">Instagram</a>
+                <a href="https://www.youtube.com/@jinbu_3d" class="sns-btn" target="_blank" rel="noopener">YouTube</a>
               </div>
             </div>
           </div>
@@ -353,28 +357,62 @@
   <div class="footer-bottom">&copy; 2026 진부중학교 3D 동아리. All rights reserved.</div>
 </footer>
 
+<script type="module" src="dataService.js"></script>
 <script src="main.js"></script>
 <script>
   const form = document.getElementById('contactForm');
   const formSuccess = document.getElementById('formSuccess');
   const resetBtn = document.getElementById('resetBtn');
+  const submitBtn = document.getElementById('submitBtn');
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const message = document.getElementById('message').value.trim();
+
     if (!name || !email || !message) {
       alert('이름, 이메일, 내용은 필수 입력 항목입니다.');
       return;
     }
-    const subject = encodeURIComponent('[진부중 3D 동아리 문의] ' + name);
-    const grade = document.getElementById('grade').value.trim();
-    const subjectType = document.getElementById('subject').value;
-    const body = encodeURIComponent(`이름: ${name}\n학년/반/번호: ${grade}\n문의 유형: ${subjectType}\n\n${message}`);
-    window.location.href = `mailto:contact@jb3d.xyz?subject=${subject}&body=${body}`;
-    form.style.display = 'none';
-    formSuccess.style.display = 'block';
+
+    // 이메일 형식 검증
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('올바른 이메일 형식을 입력해주세요.');
+      return;
+    }
+
+    try {
+      submitBtn.disabled = true;
+      submitBtn.innerText = '보내는 중...';
+
+      // dataService가 준비될 때까지 대기
+      if (!window.dataService) {
+        throw new Error('시스템이 준비되지 않았습니다. 페이지를 새로고침하세요.');
+      }
+
+      const contactData = {
+        name,
+        grade: document.getElementById('grade').value.trim(),
+        email,
+        subject: document.getElementById('subject').value,
+        message
+      };
+
+      await window.dataService.addContact(contactData);
+
+      form.style.display = 'none';
+      formSuccess.style.display = 'block';
+
+    } catch (error) {
+      console.error('문의 저장 실패:', error);
+      alert('문의 저장에 실패했습니다. 잠시 후 다시 시도해주세요.\n오류: ' + error.message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = '보내기 →';
+    }
   });
 
   resetBtn.addEventListener('click', () => {

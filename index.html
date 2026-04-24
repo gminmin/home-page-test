@@ -5,8 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>진부중학교 3D 동아리</title>
-  <meta name="description" content="진부중학교 3D 모델링·렌더링·애니메이션 동아리 공식 홈페이지입니다." />
+  <meta name="description" content="진부중학교 3D 동아리 공식 홈페이지입니다." />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     /* ===== 히어로 ===== */
     .hero {
@@ -40,13 +41,12 @@
       align-items: center;
       gap: 8px;
       background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.4);
       border-radius: 30px;
       padding: 5px 16px;
       font-size: 0.8rem;
       color: rgba(255, 255, 255, 0.92);
       letter-spacing: 0.08em;
-      backdrop-filter: blur(8px);
       margin-bottom: 1.5rem;
       animation: fadeUp 0.8s ease both;
     }
@@ -68,7 +68,6 @@
       font-weight: 900;
       font-size: clamp(2rem, 6vw, 4rem);
       color: var(--c-white);
-      text-shadow: 0 4px 40px rgba(0, 0, 0, 0.2);
       line-height: 1.15;
       margin-bottom: 1.25rem;
       animation: fadeUp 0.9s 0.15s ease both;
@@ -214,7 +213,7 @@
       flex-direction: column;
       padding: 2rem 1.75rem;
       background: var(--c-card);
-      border: 1px solid rgba(4, 173, 192, 0.12);
+      border: 2px solid rgba(4, 173, 192, 0.25);
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-sm);
       transition: var(--transition);
@@ -255,7 +254,7 @@
       justify-content: center;
       font-family: var(--f-accent);
       font-size: 0.75rem;
-      font-weight: 700;
+      font-weight: 900;
       background: var(--grad-main);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -341,7 +340,7 @@
     .stat-chip {
       padding: 0.5rem 1.25rem;
       background: linear-gradient(135deg, rgba(4, 173, 192, 0.08), rgba(93, 104, 166, 0.08));
-      border: 1px solid rgba(4, 173, 192, 0.18);
+      border: 2px solid rgba(4, 173, 192, 0.25);
       border-radius: 30px;
       font-size: 0.85rem;
       font-weight: 600;
@@ -392,16 +391,12 @@
     <canvas id="hero-canvas"></canvas>
     <canvas id="hero-cube-canvas" class="hero-cube-canvas"></canvas>
     <div class="hero-content">
-      <div class="hero-label">
-        진부중학교 3D 동아리
-      </div>
+      <a href="admin_Login.html"><span class="hero-label">Hello, Art World!</span></a>
       <h1>
-        <span class="sub">모델링 · 렌더링 · 애니메이션</span>
         진부중 3D 동아리
       </h1>
       <p class="hero-desc">
-        3D의 세계를 탐구하고 창작하는 진부중학교 공식 3D 동아리입니다.<br />
-        상상을 현실로, 아이디어를 입체로 표현합니다.
+        상상을 현실로, 창작의 세계.
       </p>
       <div class="hero-btns">
         <a href="about.html" class="btn btn-primary">동아리 소개 →</a>
@@ -421,7 +416,7 @@
     <div style="max-width:1140px; margin-inline:auto;">
       <div class="section-header reveal">
         <span class="section-label">EXPLORE</span>
-        <h2 class="section-title">무엇을 찾으세요?</h2>
+        <h2 class="section-title">탐구</h2>
       </div>
       <div class="nav-cards-grid">
         <a href="about.html" class="nav-card reveal">
@@ -439,7 +434,7 @@
         <a href="works.html" class="nav-card reveal reveal-delay-2">
           <div class="nav-card-icon"><span>작품</span></div>
           <h3>작품</h3>
-          <p>동아리원들이 만든 3D 작품들을 감상하세요.</p>
+          <p>동아리원들이 만든 3D 작품들을 감상하세요. <br><strong style="color: #118cbd;">잠깐 감상해보세요.</strong></p>
           <span class="nav-card-arrow">→</span>
         </a>
         <a href="gallery.html" class="nav-card reveal reveal-delay-3">
@@ -479,14 +474,9 @@
           <div class="reveal reveal-delay-1">
             <p style="color:var(--c-text-sub); margin-top:1rem; line-height:1.9;">
               <strong style="color:var(--c-teal)">진부중학교 3D 동아리</strong>는 3D 모델링, 렌더링, 애니메이션을
-              배우고 창작하는 동아리입니다. 최신 3D 소프트웨어를 활용해 아이디어를 입체적으로 구현하며,
-              서로 가르치고 배우는 협력 문화를 지향합니다.
+              배우고 창작하는<br> 동아리입니다. 다양한 소프트웨어 및 장비를 활용해 아이디어를 구현하며,<br>
+              자유로운 표현을 중시하며 창의적인 작품을 만들어갑니다. <br><br>
             </p>
-            <div class="stat-chips mt-2">
-              <span class="stat-chip">3D 모델링</span>
-              <span class="stat-chip">렌더링</span>
-              <span class="stat-chip">애니메이션</span>
-            </div>
             <a href="about.html" class="btn btn-primary mt-4" style="display:inline-flex;">자세히 보기 →</a>
           </div>
         </div>
@@ -529,19 +519,18 @@
   <section style="background:var(--grad-hero); padding:4rem 5%; text-align:center; position:relative; overflow:hidden;">
     <div style="position:relative; z-index:2;">
       <p class="font-accent"
-        style="color:rgba(255,255,255,0.6); font-size:0.85rem; letter-spacing:0.1em; margin-bottom:1rem;">WE CREATE</p>
+        style="color:rgba(255,255,255,0.6); font-size:0.85rem; letter-spacing:0.1em; margin-bottom:1rem;">너, 인재?</p>
       <div class="tags-row" style="justify-content:center;">
         <span
-          style="padding:0.6rem 1.5rem; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:30px; color:#fff; font-size:0.9rem; backdrop-filter:blur(8px);">3D
-          모델링</span>
+          style="padding:0.6rem 1.5rem; background:rgba(255,255,255,0.15); border:2px solid rgba(255,255,255,0.4); border-radius:30px; color:#fff; font-size:0.9rem;">아이디어</span>
         <span
-          style="padding:0.6rem 1.5rem; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:30px; color:#fff; font-size:0.9rem; backdrop-filter:blur(8px);">렌더링</span>
+          style="padding:0.6rem 1.5rem; background:rgba(255,255,255,0.15); border:2px solid rgba(255,255,255,0.4); border-radius:30px; color:#fff; font-size:0.9rem;">애니메이션</span>
         <span
-          style="padding:0.6rem 1.5rem; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:30px; color:#fff; font-size:0.9rem; backdrop-filter:blur(8px);">애니메이션</span>
+          style="padding:0.6rem 1.5rem; background:rgba(255,255,255,0.15); border:2px solid rgba(255,255,255,0.4); border-radius:30px; color:#fff; font-size:0.9rem;">디자인</span>
         <span
-          style="padding:0.6rem 1.5rem; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:30px; color:#fff; font-size:0.9rem; backdrop-filter:blur(8px);">VFX</span>
+          style="padding:0.6rem 1.5rem; background:rgba(255,255,255,0.15); border:2px solid rgba(255,255,255,0.4); border-radius:30px; color:#fff; font-size:0.9rem;">모델링</span>
         <span
-          style="padding:0.6rem 1.5rem; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:30px; color:#fff; font-size:0.9rem; backdrop-filter:blur(8px);">창작</span>
+          style="padding:0.6rem 1.5rem; background:rgba(255,255,255,0.15); border:2px solid rgba(255,255,255,0.4); border-radius:30px; color:#fff; font-size:0.9rem;">창작</span>
       </div>
       <a href="contact.html" class="btn mt-4"
         style="display:inline-flex; background:rgba(255,255,255,0.9); color:var(--c-teal); margin-top:2rem;">동아리 문의하기
@@ -553,8 +542,8 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-brand">
-        <div class="footer-logo">진부중 3D 동아리</div>
-        <p>진부중학교 3D 동아리<br />3D 모델링 · 렌더링 · 애니메이션</p>
+        <div class="footer-logo">진부중학교 3D 동아리</div>
+        <p>상상을 현실로, 창작의 세계<br /></p>
       </div>
       <div class="footer-col">
         <h4>메뉴</h4>
@@ -604,22 +593,36 @@
       // 최신 공지사항 렌더링 (최대 3개)
       const noticePreviewContainer = document.querySelector('.section[style*="background:var(--c-bg)"] div[style*="max-width:720px"]');
       if (noticePreviewContainer) {
-        const notices = await dataService.getNotices();
-        noticePreviewContainer.innerHTML = '';
-        
-        notices.slice(0, 3).forEach((n, index) => {
-          const item = document.createElement('div');
-          item.className = `notice-item reveal`;
-          if (index > 0) item.classList.add(`reveal-delay-${index}`);
-          item.innerHTML = `
-            <span class="notice-date">${n.date}</span>
-            <span class="notice-title" style="cursor:pointer" onclick="location.href='notice.html'">${n.title}</span>
-            ${n.isNew ? '<span class="notice-new">NEW</span>' : ''}
-          `;
-          noticePreviewContainer.appendChild(item);
-        });
-        
-        if (window.initScrollReveal) window.initScrollReveal();
+        try {
+          if (!window.dataService) {
+            console.warn("dataService가 아직 로드되지 않았습니다.");
+            throw new Error("dataService 초기화 실패");
+          }
+
+          const notices = await window.dataService.getNotices();
+          noticePreviewContainer.innerHTML = '';
+
+          if (notices.length === 0) {
+            noticePreviewContainer.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:2rem;">공지사항이 없습니다.</div>';
+          } else {
+            notices.slice(0, 3).forEach((n, index) => {
+              const item = document.createElement('div');
+              item.className = `notice-item reveal`;
+              if (index > 0) item.classList.add(`reveal-delay-${index}`);
+              item.innerHTML = `
+                <span class="notice-date">${n.date}</span>
+                <span class="notice-title" style="cursor:pointer" onclick="location.href='notice.html'">${n.title}</span>
+                ${n.isNew ? '<span class="notice-new">NEW</span>' : ''}
+              `;
+              noticePreviewContainer.appendChild(item);
+            });
+          }
+
+          if (window.initScrollReveal) window.initScrollReveal();
+        } catch (error) {
+          console.error("공지사항 로드 실패:", error);
+          noticePreviewContainer.innerHTML = '<div style="text-align:center; color:#ef4444; padding:2rem;">공지사항을 불러올 수 없습니다.</div>';
+        }
       }
     });
   </script>

@@ -6,12 +6,13 @@
   <title>공지사항 – 진부중학교 3D 동아리</title>
   <meta name="description" content="진부중학교 3D 동아리의 공지사항을 확인하세요." />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     .notice-list { max-width: 800px; margin-inline: auto; }
 
     .notice-card {
       background: var(--c-card);
-      border: 1px solid rgba(4,173,192,0.12);
+      border: 2px solid rgba(4,173,192,0.25);
       border-radius: var(--radius-md);
       padding: 1.5rem 1.75rem;
       margin-bottom: 1rem;
@@ -57,7 +58,7 @@
       background: rgba(12,13,13,0.7);
       display: none; align-items: center; justify-content: center;
       padding: 2rem;
-      backdrop-filter: blur(6px);
+      border: 1px solid rgba(4,173,192,0.2);
     }
     .notice-modal.open { display: flex; }
     .modal-inner {
@@ -290,7 +291,7 @@
             <div class="notice-card-header">
               <div>
                 <h3>${n.title}</h3>
-                <p>${n.content.substring(0, 100)}${n.content.length > 100 ? '...' : ''}</p>
+                <p>${marked.parse(n.content.substring(0, 200))}</p>
               </div>
               <div class="notice-card-date">${n.date}</div>
             </div>
@@ -301,7 +302,7 @@
             document.getElementById('modalDate').textContent = n.date;
             document.getElementById('modalType').textContent = typeLabel;
             document.getElementById('modalType').className = `notice-type ${typeClass}`;
-            document.getElementById('modalBody').innerHTML = n.content.replace(/\n/g, '<br />');
+            document.getElementById('modalBody').innerHTML = marked.parse(n.content);
             document.getElementById('noticeModal').classList.add('open');
           });
 

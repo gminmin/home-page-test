@@ -6,6 +6,7 @@
   <title>갤러리 – 진부중학교 3D 동아리</title>
   <meta name="description" content="진부중학교 3D 동아리 활동 사진과 영상 갤러리입니다." />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     .tab-bar {
       display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2.5rem;
@@ -26,7 +27,7 @@
       break-inside: avoid; margin-bottom: 1rem;
       border-radius: var(--radius-md); overflow: hidden;
       position: relative; cursor: pointer;
-      border: 1px solid rgba(4,173,192,0.12);
+      border: 2px solid rgba(4,173,192,0.25);
     }
     .photo-item:hover .photo-overlay { opacity: 1; }
     .photo-thumb {
@@ -36,7 +37,6 @@
       font-family: var(--f-accent);
       font-size: 1rem; color: rgba(255,255,255,0.8);
       letter-spacing: 0.05em;
-      text-shadow: 0 1px 8px rgba(0,0,0,0.2);
     }
     .photo-thumb.h-sm { height: 150px; }
     .photo-thumb.h-md { height: 210px; }
@@ -60,7 +60,7 @@
 
     .video-card {
       background: var(--c-card);
-      border: 1px solid rgba(4,173,192,0.12);
+      border: 2px solid rgba(4,173,192,0.25);
       border-radius: var(--radius-md);
       overflow: hidden; box-shadow: var(--shadow-sm);
       transition: var(--transition);
@@ -75,8 +75,7 @@
     .video-play-btn {
       width: 56px; height: 56px; border-radius: 50%;
       background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(8px);
-      border: 2px solid rgba(255,255,255,0.4);
+      border: 3px solid rgba(255,255,255,0.6);
       display: flex; align-items: center; justify-content: center;
       transition: var(--transition);
     }
@@ -145,120 +144,16 @@
     <!-- 사진 탭 -->
     <div class="tab-content active" id="tab-photo">
       <div class="photo-grid">
-        <div class="photo-item reveal">
-          <div class="photo-thumb h-md" style="background:linear-gradient(135deg,#04ADC0,#5D68A6);">
-            <span class="photo-thumb-label">모델링 수업</span>
-          </div>
-          <div class="photo-overlay">
-            <div class="photo-overlay-title">모델링 수업 현장</div>
-            <div class="photo-overlay-date">2025.09.15</div>
-          </div>
-        </div>
-        <div class="photo-item reveal">
-          <div class="photo-thumb h-lg" style="background:linear-gradient(135deg,#9C7BA6,#03D9D9);">
-            <span class="photo-thumb-label">전시회</span>
-          </div>
-          <div class="photo-overlay">
-            <div class="photo-overlay-title">2025 작품 전시회</div>
-            <div class="photo-overlay-date">2025.12.10</div>
-          </div>
-        </div>
-        <div class="photo-item reveal">
-          <div class="photo-thumb h-sm" style="background:linear-gradient(135deg,#56BF7C,#04ADC0);">
-            <span class="photo-thumb-label">전체 회의</span>
-          </div>
-          <div class="photo-overlay">
-            <div class="photo-overlay-title">전체 동아리 회의</div>
-            <div class="photo-overlay-date">2025.10.05</div>
-          </div>
-        </div>
-        <div class="photo-item reveal">
-          <div class="photo-thumb h-sm" style="background:linear-gradient(135deg,#5D68A6,#9C7BA6);">
-            <span class="photo-thumb-label">텍스처링</span>
-          </div>
-          <div class="photo-overlay">
-            <div class="photo-overlay-title">텍스처링 실습</div>
-            <div class="photo-overlay-date">2025.11.20</div>
-          </div>
-        </div>
-        <div class="photo-item reveal">
-          <div class="photo-thumb h-md" style="background:linear-gradient(135deg,#03D9D9,#56BF7C);">
-            <span class="photo-thumb-label">렌더링 감상</span>
-          </div>
-          <div class="photo-overlay">
-            <div class="photo-overlay-title">렌더링 결과물 감상</div>
-            <div class="photo-overlay-date">2025.11.30</div>
-          </div>
-        </div>
-        <div class="photo-item reveal">
-          <div class="photo-thumb h-lg" style="background:linear-gradient(135deg,#04ADC0,#56BF7C);">
-            <span class="photo-thumb-label">스컬팅</span>
-          </div>
-          <div class="photo-overlay">
-            <div class="photo-overlay-title">스컬팅 워크숍</div>
-            <div class="photo-overlay-date">2026.03.22</div>
-          </div>
-        </div>
-        <div class="photo-item reveal">
-          <div class="photo-thumb h-md" style="background:linear-gradient(135deg,#9C7BA6,#5D68A6);">
-            <span class="photo-thumb-label">애니메이션</span>
-          </div>
-          <div class="photo-overlay">
-            <div class="photo-overlay-title">애니메이션 발표</div>
-            <div class="photo-overlay-date">2026.02.28</div>
-          </div>
-        </div>
-        <div class="photo-item reveal">
-          <div class="photo-thumb h-sm" style="background:linear-gradient(135deg,#03D9D9,#04ADC0);">
-            <span class="photo-thumb-label">건축 모델링</span>
-          </div>
-          <div class="photo-overlay">
-            <div class="photo-overlay-title">건축 모델링 수업</div>
-            <div class="photo-overlay-date">2026.04.01</div>
-          </div>
-        </div>
+        <!-- 사진 아이템은 JavaScript로 동적으로 추가됩니다 -->
+        <p style="grid-column: 1/-1; text-align:center; padding: 3rem; width: 100%;">사진을 불러오는 중...</p>
       </div>
     </div>
 
     <!-- 영상 탭 -->
     <div class="tab-content" id="tab-video">
       <div class="video-grid">
-        <div class="video-card reveal">
-          <div class="video-thumb" style="background:linear-gradient(135deg,#04ADC0,#5D68A6);">
-            <div class="video-play-btn"><div class="play-triangle"></div></div>
-          </div>
-          <div class="video-body">
-            <h3>2025 연말 발표회 하이라이트</h3>
-            <p>2025.12.15 · 동아리원 전체 발표 영상</p>
-          </div>
-        </div>
-        <div class="video-card reveal reveal-delay-1">
-          <div class="video-thumb" style="background:linear-gradient(135deg,#9C7BA6,#03D9D9);">
-            <div class="video-play-btn"><div class="play-triangle"></div></div>
-          </div>
-          <div class="video-body">
-            <h3>로봇 캐릭터 애니메이션</h3>
-            <p>2025.11.10 · 리깅 &amp; 키프레임 애니메이션</p>
-          </div>
-        </div>
-        <div class="video-card reveal">
-          <div class="video-thumb" style="background:linear-gradient(135deg,#56BF7C,#04ADC0);">
-            <div class="video-play-btn"><div class="play-triangle"></div></div>
-          </div>
-          <div class="video-body">
-            <h3>도시 재생 프로젝트 티저</h3>
-            <p>2025.07.05 · 1학기 팀 프로젝트 영상</p>
-          </div>
-        </div>
-        <div class="video-card reveal reveal-delay-1">
-          <div class="video-thumb" style="background:linear-gradient(135deg,#5D68A6,#56BF7C);">
-            <div class="video-play-btn"><div class="play-triangle"></div></div>
-          </div>
-          <div class="video-body">
-            <h3>VFX 파티클 실습</h3>
-            <p>2026.03.30 · 블렌더 파티클 시뮬레이션</p>
-          </div>
-        </div>
+        <!-- 영상 아이템은 JavaScript로 동적으로 추가됩니다 -->
+        <p style="grid-column: 1/-1; text-align:center; padding: 3rem; width: 100%;">영상을 불러오는 중...</p>
       </div>
     </div>
 
@@ -312,7 +207,7 @@
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
 
-        photoGrid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding: 3rem; width: 100%;">사진을 불러오는 중...</p>';
+        photoGrid.innerHTML = '<p style="column-span: all; text-align:center; padding: 3rem; width: 100%;">사진을 불러오는 중...</p>';
         videoGrid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding: 3rem; width: 100%;">영상을 불러오는 중...</p>';
 
         const galleryItems = await ds.getGallery();
@@ -323,7 +218,7 @@
         const videos = galleryItems.filter(i => i.type === 'video');
 
         if (photos.length === 0) {
-          photoGrid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding: 3rem; width: 100%;">등록된 사진이 없습니다.</p>';
+          photoGrid.innerHTML = '<p style="column-span: all; text-align:center; padding: 3rem; width: 100%;">등록된 사진이 없습니다.</p>';
         } else {
           photos.forEach((p, index) => {
             const item = document.createElement('div');
@@ -362,7 +257,7 @@
               </div>
             `;
             // 영상 재생 로직 (필요시 추가)
-            photoGrid.appendChild(item);
+            videoGrid.appendChild(item);
           });
         }
 

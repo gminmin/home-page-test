@@ -6,6 +6,7 @@
   <title>작품 – 진부중학교 3D 동아리</title>
   <meta name="description" content="진부중학교 3D 동아리 학생들의 3D 작품을 감상하세요." />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     .filter-bar {
       display: flex; gap: 0.5rem; flex-wrap: wrap;
@@ -34,7 +35,7 @@
     .work-item {
       position: relative; border-radius: var(--radius-md);
       overflow: hidden; cursor: pointer;
-      border: 1px solid rgba(4,173,192,0.12);
+      border: 2px solid rgba(4,173,192,0.25);
       box-shadow: var(--shadow-sm);
       transition: var(--transition);
     }
@@ -49,7 +50,6 @@
       font-family: var(--f-accent);
       font-size: 1.6rem;
       color: rgba(255,255,255,0.85);
-      text-shadow: 0 2px 12px rgba(0,0,0,0.2);
       letter-spacing: 0.05em;
       position: relative; z-index: 1;
     }
@@ -215,7 +215,7 @@
       </div>
     </div>
 
-    <div class="reveal" style="text-align:center; margin-top:3rem; padding:2rem; background:rgba(4,173,192,0.04); border:1px dashed rgba(4,173,192,0.25); border-radius:var(--radius-md);">
+    <div class="reveal" style="text-align:center; margin-top:3rem; padding:2rem; background:rgba(4,173,192,0.04); border:2px dashed rgba(4,173,192,0.4); border-radius:var(--radius-md);">
       <p style="color:var(--c-text-sub); font-size:0.9rem; margin-bottom:1rem;">
         더 많은 작품이 업로드될 예정입니다. 작품을 공유하고 싶다면 문의해주세요.
       </p>
@@ -292,7 +292,7 @@
               </div>
               <div class="work-info">
                 <h3>${w.title}</h3>
-                <p>제작: ${w.author}</p>
+                <p>${marked.parse(w.description || '')}</p>
                 <div class="tags"><span class="badge">${w.category}</span></div>
               </div>
             `;
