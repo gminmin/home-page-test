@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="test.css">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>테스트</title>
+    <style>
+        /* 메시지 박스 스타일 */
+        #copyMessage {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s;
+            background: #6b3a3a;
+            color: white;
+            padding: 10px;
+            display: inline-block;
+        }
+        #copyMessage.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 버튼의 onclick 이름과 함수 이름이 정확히 같은지 확인 -->
+    <button onclick="copyEmail()">이메일 복사하기</button>
+
+    <div id="copyMessage">✅ 복사 완료!</div>
+
+    <script>
+        // 2. 함수 이름이 스펠링 하나 틀리지 않고 'copyEmail'인지 확인
+        function copyEmail() {
+            const email = "contact@jb3d.xyz";
+            const messageBox = document.getElementById("copyMessage");
+
+            navigator.clipboard.writeText(email).then(() => {
+                messageBox.classList.add("show");
+                setTimeout(() => {
+                    messageBox.classList.remove("show");
+                }, 2000);
+            }).catch(err => {
+                console.error("복사 실패:", err);
+            });
+        }
+    </script>
+</body>
+</html>

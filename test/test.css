@@ -1,0 +1,19 @@
+.toast-icon {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #880000;
+  color: #c42222;
+  padding: 10px 20px;
+  border-radius: 8px;
+  opacity: 0; /* 처음엔 투명하게 */
+  visibility: hidden; /* 클릭 방지 */
+  transition: opacity 0.5s ease; /* 부드러운 전환 */
+}
+
+/* 클래스가 추가되었을 때만 보이게 함 */
+.toast-icon.show {
+  opacity: 1;
+  visibility: visible;
+}

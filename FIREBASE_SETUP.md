@@ -1,24 +1,38 @@
-# Firebase Firestore 보안 규칙 설정 가이드
+# Firebase setup guide
 
-## 현재 상황
-현재 데이터가 저장되지 않고 로드되지 않는 이유는 **Firestore 보안 규칙**이 제대로 설정되지 않았기 때문일 가능성이 높습니다.
+## 가장 먼저 확인할 것
 
-## 필수 설정 단계
+GitHub Pages에서만 Firebase 기능이 안 되면, 가장 흔한 원인은 아래 둘 중 하나입니다.
 
-### 1. Firebase Console 접속
-1. https://console.firebase.google.com 방문
-2. 프로젝트 선택: **jb3d-a98fd**
+1. `Firebase Authentication`의 `Authorized domains`에 배포 도메인이 없음
+2. `Firestore / Storage Rules`가 현재 요청을 막고 있음
 
-### 2. Firestore Database 보안 규칙 설정
-1. 왼쪽 메뉴에서 **Firestore Database** 클릭
-2. 상단 탭에서 **Rules** 클릭
-3. 다음 규칙을 복사해서 붙여넣기:
+## 1. Authentication 허용 도메인 추가
+
+1. Firebase Console 접속
+2. 프로젝트 `jb3d-a98fd` 선택
+3. `Authentication` > `Settings` 이동
+4. `Authorized domains`에 실제 배포 주소 추가
+
+추가해야 할 예시:
+
+- `YOUR_ID.github.io`
+- `YOUR_ID.github.io/REPOSITORY_NAME` 가 아니라 도메인만 추가
+- 커스텀 도메인을 쓴다면 `jb3d.xyz` 도 추가
+
+중요:
+
+- `github.io` 전체를 넣는 것이 아니라 실제 본인 Pages 도메인을 넣어야 합니다.
+- 커스텀 도메인과 GitHub Pages 기본 도메인을 둘 다 쓰면 둘 다 추가하는 편이 안전합니다.
+
+## 2. Firestore Rules 확인
+
+관리자만 읽기/쓰기를 하려면 예시:
 
 ```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // 인증된 사용자만 모든 데이터 읽기/쓰기 가능
     match /{document=**} {
       allow read, write: if request.auth != null;
     }
@@ -26,22 +40,32 @@ service cloud.firestore {
 }
 ```
 
-4. **Publish** 버튼 클릭
+주의:
 
-### 3. Collections 생성
-Firestore가 자동으로 생성되지 않을 경우 수동으로 생성:
+- 현재 `contact.html`은 비로그인 상태에서 `contacts` 컬렉션에 쓰기 요청을 보냅니다.
+- 그래서 위 규칙을 그대로 쓰면 문의 등록은 차단됩니다.
 
-1. **Start collection** 클릭
-2. 컬렉션 ID 입력:
-   - `notices`
-   - `works`
-   - `gallery`
-3. 각 컬렉션에 문서 추가
+문의 폼까지 허용하려면 컬렉션별로 분리해서 규칙을 짜야 합니다. 예시:
 
-### 4. Storage 보안 규칙 설정
-1. 왼쪽 메뉴에서 **Storage** 클릭
-2. **Rules** 탭 클릭
-3. 다음 규칙을 적용:
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /contacts/{document} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+```
+
+## 3. Storage Rules 확인
+
+관리자 로그인 후 업로드만 허용하려면:
 
 ```javascript
 rules_version = '2';
@@ -55,74 +79,32 @@ service firebase.storage {
 }
 ```
 
-4. **Publish** 버튼 클릭
+## 4. Email/Password 로그인 활성화
 
-또는 더 간단하게 인증된 사용자만:
+1. `Authentication` > `Sign-in method`
+2. `Email/Password` 활성화
+3. 관리자 계정 생성
 
-```javascript
-rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if request.auth != null;
-    }
-  }
-}
-```
+## 5. 브라우저에서 바로 확인하는 방법
 
-### 5. Authentication 설정
-1. 왼쪽 메뉴에서 **Authentication** 클릭
-2. **Sign-in method** 탭 클릭
-3. **Email/Password** 활성화
+배포된 GitHub Pages 사이트에서 `F12`를 열고 `Console`을 확인하세요.
 
-### 6. 관리자 계정 생성
-1. **Users** 탭에서 **Create user** 클릭
-2. 이메일과 비밀번호 설정
-   - 예: `admin@jb3d.xyz` / `암호123!`
-3. **Create** 클릭
+이제 코드가 아래 정보를 같이 출력합니다.
 
-## 테스트 방법
+- 현재 접속한 `Origin`
+- Firebase 프로젝트 ID
+- Firebase Auth domain
+- Firebase 에러 코드
+- GitHub Pages에서 자주 생기는 설정 힌트
 
-### 1. 관리자 페이지 접속
-- `admin.html` 페이지로 이동
-- 위에서 생성한 계정으로 로그인
-- 대시보드에 데이터가 표시되는지 확인
+특히 이런 에러를 찾으면 원인이 거의 확정됩니다.
 
-### 2. 공지사항 추가 테스트
-1. "공지사항 관리" 탭 클릭
-2. "+ 공지 추가" 버튼 클릭
-3. 제목과 내용 입력 후 저장
-4. 콘솔에 에러가 없는지 확인
+- `auth/unauthorized-domain`
+- `permission-denied`
+- `storage/unauthorized`
 
-### 3. 메인 페이지 데이터 확인
-- `index.html` 페이지 새로고침
-- 공지사항 미리보기 섹션에 저장한 공지가 표시되는지 확인
+## 6. 이번 코드 기준으로 특히 중요한 점
 
-## 자주 발생하는 문제 해결
-
-### 에러: "Permission denied"
-- Firestore 보안 규칙을 다시 확인하세요.
-- Publish를 클릭했는지 확인하세요.
-
-### 에러: "Collection not found"
-- Firebase Console에서 컬렉션을 수동으로 생성하세요.
-
-### 에러: "User not found"
-- 로그인한 이메일과 비밀번호가 정확한지 확인하세요.
-
-### 브라우저 콘솔 확인
-F12를 눌러 개발자 도구를 열고 **Console** 탭에서 오류 메시지를 확인하세요.
-
-## 보안 주의사항
-
-현재 Firebase 보안 규칙은 테스트용입니다.
-프로덕션 배포 전에 다음을 권장합니다:
-- 환경 변수로 Firebase 설정 관리
-- 보안 규칙을 더 세밀하게 설정
-- 클라이언트/서버 분리
-
-## 참고 자료
-
-- [Firestore 보안 규칙](https://firebase.google.com/docs/firestore/security/get-started)
-- [Storage 보안 규칙](https://firebase.google.com/docs/storage/security/start)
-- [Firebase Authentication](https://firebase.google.com/docs/auth)
+- 관리자 로그인 실패가 GitHub Pages에서만 발생하면 거의 `Authorized domains` 문제일 가능성이 큽니다.
+- 문의 등록이 실패하면 `contacts` 컬렉션에 대한 Firestore 규칙 문제일 가능성이 큽니다.
+- 작품/갤러리 업로드가 실패하면 Storage 규칙 또는 로그인 상태 문제일 가능성이 큽니다.

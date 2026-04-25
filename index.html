@@ -4,9 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>진부중학교 3D 동아리</title>
   <meta name="description" content="진부중학교 3D 동아리 공식 홈페이지입니다." />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=2026-04-25-1" />
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     /* ===== 히어로 ===== */
@@ -391,7 +394,7 @@
     <canvas id="hero-canvas"></canvas>
     <canvas id="hero-cube-canvas" class="hero-cube-canvas"></canvas>
     <div class="hero-content">
-      <a href="admin_Login.html"><span class="hero-label">Hello, Art World!</span></a>
+      <button class="hero-label" id="countBtn">Hello, Art World!</button>
       <h1>
         진부중 3D 동아리
       </h1>
@@ -569,8 +572,8 @@
     </div>
   </footer>
 
-  <script type="module" src="dataService.js"></script>
-  <script src="main.js"></script>
+  <script type="module" src="dataService.js?v=2026-04-25-1"></script>
+  <script src="main.js?v=2026-04-25-1"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       // 파티클 및 3D 큐브 초기화
@@ -626,6 +629,39 @@
       }
     });
   </script>
+  <script>
+    let count = 0;
+    const btn = document.getElementById('countBtn');
+
+    btn.addEventListener('click', () => {
+    count++;
+
+  // 3번 클릭 전까지는 경고 문구
+  if (count < 3) {
+    btn.innerText = '누르지 마세요.';
+    setTimeout(() => { btn.innerText = 'Hello, Art World!'; }, 500); 
+  } 
+  
+  // 정확히 3번 클릭했을 때 이벤트 발동
+  else if (count === 3) {
+    console.log("easter egg : 네르지 마세요!");
+    const textArray = ["학교의 전설을 아시나  요?", "4시40분이 되면", "퇴근송이 울립니다.", "그거 제가 편집했어요.", "4번 수정했답니다...", "Hllo, Art World!"];
+    let i = 0;
+
+    // setInterval을 변수에 담아야 나중에 멈출 수 있어요
+    const timer = setInterval(() => {
+      btn.innerText = textArray[i];
+      i++;
+
+      // 마지막 텍스트까지 나오면 반복 종료
+      if (i === textArray.length) {
+        clearInterval(timer);
+        count = 0; // 다시 처음부터 할 수 있게 초기화
+      }
+    }, 3000);
+  }
+});
+</script>
 </body>
 
 </html>
